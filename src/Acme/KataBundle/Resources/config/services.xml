@@ -8,5 +8,9 @@
         <service id="acme.form.type.article" class="Acme\KataBundle\Form\Type\ArticleType">
             <tag name="form.type" alias="article" />
         </service>
+        <service id="acme.form.type.tag_selector" class="Acme\KataBundle\Form\Type\TagType">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <tag name="form.type" alias="tag_selector" />
+        </service>
     </services>
 </container>

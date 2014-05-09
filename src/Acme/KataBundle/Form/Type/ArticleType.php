@@ -2,8 +2,10 @@
 
 namespace  Acme\KataBundle\Form\Type;
 
+use Acme\KataBundle\Form\DataTransformer\TagTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ArticleType extends AbstractType
 {
@@ -17,6 +19,7 @@ class ArticleType extends AbstractType
             ->add('title')
             ->add('content')
             ->add('author')
+            ->add('tags', 'tag_selector')
             ->add('submit', 'submit')
         ;
     }

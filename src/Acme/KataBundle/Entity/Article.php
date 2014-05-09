@@ -2,6 +2,7 @@
 
 namespace Acme\KataBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -55,6 +56,13 @@ class Article
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="Tag", cascade={"persist"})
+     */
+    private $tags;
 
     function __construct()
     {
@@ -161,5 +169,38 @@ class Article
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Add tags
+     *
+     * @param \Acme\KataBundle\Entity\Tag $tags
+     * @return Article
+     */
+    public function addTag(Tag $tags)
+    {
+        $this->tags[] = $tags;
+
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param \Acme\KataBundle\Entity\Tag $tags
+     */
+    public function removeTag(Tag $tags)
+    {
+        $this->tags->removeElement($tags);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

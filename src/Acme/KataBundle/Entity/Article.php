@@ -2,6 +2,7 @@
 
 namespace Acme\KataBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -45,7 +46,6 @@ class Article
      * @ORM\Column(name="content", type="text")
      *
      * @Assert\NotBlank(message="Content should not be empty")
-     * @Assert\Length(min="20", minMessage="Article description must be longer")
      */
     private $content;
 
@@ -56,9 +56,34 @@ class Article
      */
     private $createdAt;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Category", cascade={"persist"})
+     */
+    protected $categories;
+
     function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->categories = new ArrayCollection();
+    }
+
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category)
+    {
+        $this->categories->add($category);
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category)
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
     }
 
     /**

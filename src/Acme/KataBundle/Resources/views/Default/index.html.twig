@@ -3,7 +3,64 @@
 {% block content %}
     {{ form_start(form) }}
 
-    {{ form_row(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.content) }}
+    {{ form_row(form.author) }}
+
+    <br/>
+    <h3>Categories:</h3>
+
+    <ul class="categories" data-prototype="{{ form_widget(form.categories.vars.prototype)|e }}">
+        {% for category in form.categories %}
+            <li>{{ form_row(category.name) }}</li>
+        {% endfor %}
+    </ul>
 
     {{ form_end(form) }}
+
+    <script>
+        var categoryList = $('ul.categories');
+        var prototype = categoryList.data('prototype');
+        var addCategoryLink = $('<li><a href="#" class="add_category_link">Add a category</a></li>');
+
+        $(document).ready(function() {
+            // insert the link after the category list
+            categoryList.after(addCategoryLink);
+
+            categoryList.find('li').each(function() {
+                addDeleteLink($(this));
+            });
+
+            addCategoryLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+                // add a new category
+                addCategoryForm(categoryList, categoryList.find(':input').length);
+            });
+        });
+
+        function addCategoryForm(categoryList, index) {
+            // we set the index to the prototype
+            var prototypeWithIndex = prototype.replace(/__name__/g, index);
+
+            // Append the new category form to the list
+            var newCategoryForm = $('<li></li>').append(prototypeWithIndex);
+            categoryList.append(newCategoryForm);
+
+            addDeleteLink(newCategoryForm);
+        }
+
+        function addDeleteLink(categoryForm) {
+            var deleteLink = $('<a href="#" class="delete_category_link">Delete this category</a>');
+
+            categoryForm.append(deleteLink);
+
+            deleteLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                categoryForm.remove();
+            });
+        }
+    </script>
 {% endblock %}

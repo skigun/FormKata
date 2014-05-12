@@ -1,12 +1,13 @@
 Kata Data Transformers
 ========================
 
-As a user, I need to link Tags to my Artcile.
+#### As a user, I need to link Tags to my Artcile.
 
--  [] Add a way to add Tags in the form Article.
--  [] Link a Tag to an Article if he already exists.
--  [] Tags are represented as text with space between other Tags.
--  [] Test DataTransformer
+```
+[x] Add a way to add Tags in the form Article.
+[x] Link a Tag to an Article if he already exists.
+[x] Tags are represented as text with space between other Tags.
+```
 
 ### Steps :
 

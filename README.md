@@ -7,6 +7,7 @@ Kata Data Transformers
 [x] Add a way to add Tags in the form Article.
 [x] Link a Tag to an Article if he already exists.
 [x] Tags are represented as text with space between other Tags.
+[x] Tests dataTransformer.
 ```
 
 ### Steps :

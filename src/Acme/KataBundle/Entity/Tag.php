@@ -30,6 +30,18 @@ class Tag
      */
     private $title;
 
+    function __construct($title = null)
+    {
+        if (null !== $title) {
+            $this->title = $title;
+        }
+    }
+
+    public function __toString()
+    {
+        return $this->title;
+    }
+
     /**
      * Get id
      *

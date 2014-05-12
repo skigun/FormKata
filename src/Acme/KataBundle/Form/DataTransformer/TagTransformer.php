@@ -53,13 +53,15 @@ class TagTransformer implements DataTransformerInterface
      */
     public function reverseTransform($titles)
     {
-        if (!$titles) {
+        $titles = trim($titles);
+
+        if (empty($titles)) {
             return null;
         }
 
         $titles = explode(' ', $titles);
 
-         $existingTitles = $this->om
+        $existingTitles = $this->om
             ->getRepository('AcmeKataBundle:Tag')
             ->findByTitle($titles)
         ;

@@ -8,7 +8,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Acme\KataBundle\Entity\Tag;
 
-class TagTransformer implements DataTransformerInterface
+class TagModelTransformer implements DataTransformerInterface
 {
     /**
      * @var ObjectManager
@@ -24,43 +24,30 @@ class TagTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms objects (tags) to a string.
+     * Transforms objects (tags) to an array.
      *
      * @param  ArrayCollection|null $tags
-     * @return string
+     * @return array
      */
     public function transform($tags)
     {
         if (null === $tags) {
-            return '';
+            return array();
         }
 
-        $string = '';
-        foreach ($tags as $tag) {
-            $string.= $tag->getTitle().' ';
-        }
+        $tags = is_array($tags) ? $tags : $tags->toArray();
 
-        return $string;
+        return $tags;
     }
 
     /**
-     * Transforms a string to object(s) (tag).
+     * Transforms an array to object(s) (tag).
      *
-     * @param mixed $titles
-     * @throws TransformationFailedException
-     * @internal param string $titles
+     * @param array $titles
      * @return ArrayCollection
      */
     public function reverseTransform($titles)
     {
-        $titles = trim($titles);
-
-        if (empty($titles)) {
-            return null;
-        }
-
-        $titles = explode(' ', $titles);
-
         $existingTitles = $this->om
             ->getRepository('AcmeKataBundle:Tag')
             ->findByTitle($titles)

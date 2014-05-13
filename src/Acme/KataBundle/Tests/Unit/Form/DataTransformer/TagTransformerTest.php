@@ -2,7 +2,9 @@
 
 namespace Acme\KataBundle\Tests\Unit\Form\DataTransformer;
 
+use Acme\KataBundle\Form\DataTransformer\TagModelTransformer;
 use Acme\KataBundle\Form\DataTransformer\TagTransformer;
+use Acme\KataBundle\Form\DataTransformer\TagViewTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManager;
@@ -21,44 +23,41 @@ class TagTransformerTest extends WebTestCase
         $process->run();
     }
 
-    public function testTransform()
+    public function testViewTransform()
     {
-        /** @var EntityManager $em */
-        $em = $this->client->getContainer()->get('doctrine.orm.entity_manager');
-        $dataTransformer = new TagTransformer($em);
+        $dataTransformer = new TagViewTransformer();
 
-        $result = $dataTransformer->transform(null);
+        $result = $dataTransformer->transform(array());
         $this->assertSame('', $result);
 
-
-        $tags = $em->getRepository('AcmeKataBundle:Tag')->findAll();
-
-        $result = $dataTransformer->transform($tags);
-        $this->assertSame('chocolat coca nature meteo ', $result);
+        $result = $dataTransformer->transform(array('chocolat', 'coca', 'nature', 'meteo'));
+        $this->assertSame('chocolat coca nature meteo', $result);
     }
 
-    public function testReverseTransform()
+    public function testViewReverseTransform()
+    {
+        $dataTransformer = new TagViewTransformer();
+
+        $result = $dataTransformer->reverseTransform('salut tu vas bien ?');
+        $this->assertEquals(array('salut', 'tu', 'vas', 'bien', '?'), $result);
+    }
+
+    public function testModelReverseTransform()
     {
         /** @var EntityManager $em */
         $em = $this->client->getContainer()->get('doctrine.orm.entity_manager');
-        $dataTransformer = new TagTransformer($em);
+        $dataTransformer = new TagModelTransformer($em);
 
-        $result = $dataTransformer->reverseTransform('');
-        $this->assertNull($result);
+        $result = $dataTransformer->reverseTransform(array());
+        $this->assertEquals(array(), $result);
 
-        $result = $dataTransformer->reverseTransform(' ');
-        $this->assertNull($result);
-
-        $result = $dataTransformer->reverseTransform('   ');
-        $this->assertNull($result);
-
-        $results = $dataTransformer->reverseTransform('pomme cerise');
+        $results = $dataTransformer->reverseTransform(array('pomme', 'cerise'));
         $this->assertCount(2, $results);
         $this->assertSame('Acme\KataBundle\Entity\Tag', get_class($results[0]));
         $this->assertSame('pomme', $results[0]->getTitle());
         $this->assertSame('cerise', $results[1]->getTitle());
 
-        $results = $dataTransformer->reverseTransform(' chocolat pomme cerise ');
+        $results = $dataTransformer->reverseTransform(array('chocolat', 'pomme', 'cerise'));
         $this->assertCount(3, $results);
         $this->assertSame('Acme\KataBundle\Entity\Tag', get_class($results[0]));
         $this->assertSame('chocolat', $results[0]->getTitle());

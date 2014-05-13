@@ -1,7 +1,7 @@
 Kata Data Transformers
 ========================
 
-#### As a user, I need to link Tags to my Artcile.
+#### As a user, I need to link Tags to my Article.
 
 ```
 [x] Add a way to add Tags in the form Article.
@@ -12,14 +12,17 @@ Kata Data Transformers
 
 ### Steps :
 
-1. Create another entity Tag with a title. Who have a ManyToMany relastionShip with entity Article.
-2. Create a dataTransformers class who implements `DataTransformerInterface`.
+1. Create another entity Tag with a title. Who have a ManyToMany relationShip with entity Article.
+2. Create a ModelTransformer class who implements `DataTransformerInterface`.
 3. Inject him ObjectManager.
-4. Implements `transform` and `reverseTransform` method for converting a text field into tags. Use `explode` function.
-5. In `reverseTransform` if a tag don't exist, persit a new one with ObjectManager. If not, link  to Article.
-6. Add tags field in form Article with the dataTransformers.
-7. Now create a custom field type for tags, create a class `TagType` who implements `AbstractType`.
-8. Set your dataTransfomer directly in your custom field in the `buildForm` method.
-9. Then register your custom filed as a service and tag it with `form.type` so that it's recognized as a custom field type.
-10. Now you replace your field `'tags'` and use your custom field in your ArticleType form, like
+4. Implements `transform` and `reverseTransform` method for converting an arrayCollection to an simple array and conversely
+5. In `reverseTransform` method if a tag don't exist, persit a new one with ObjectManager. If not, link to Article.
+6. Create a ViewTransformer class who implements `DataTransformerInterface`.
+7. Implements `transform` and `reverseTransform` method for converting an array to a string with space and conversely.
+You can use `explode` and `implode` function.
+8. Now create a custom field type for tags, create a class `TagType` who implements `AbstractType`.
+9. Set your dataTransformers directly in your custom field in the `buildForm` method. Like
+`$builder->addViewTransformer($viewTransformer)->addModelTransformer($modelTransformer);`.
+10. Then register your custom filed as a service and tag it with `form.type` so that it's recognized as a custom field type.
+11. Now you can set your field `'tags'` and use your custom field in your ArticleType form, like
 `->add('tags', 'tags_selector')`

@@ -5,7 +5,6 @@ namespace  Acme\KataBundle\Form\Type;
 use Acme\KataBundle\Form\DataTransformer\TagTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ArticleType extends AbstractType
 {

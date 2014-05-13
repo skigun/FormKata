@@ -1,0 +1,19 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_widget %}
+    {{ parent() }}
+    {{ block('form_help') }}
+{% endblock %}
+
+{% block textarea_widget %}
+    {{ parent() }}
+    {{ block('form_help') }}
+{% endblock %}
+
+{% block form_help %}
+    {% spaceless %}
+        {% if help_message is defined %}
+            <span class="help"> {{ help_message }}</span>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_help %}

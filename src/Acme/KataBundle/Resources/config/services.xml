@@ -8,5 +8,10 @@
         <service id="acme.form.type.article" class="Acme\KataBundle\Form\Type\ArticleType">
             <tag name="form.type" alias="article" />
         </service>
+        <service id="acme_kata_bundle.help_message_extension"
+                 class="Acme\KataBundle\Form\Extension\HelpMessageExtension"
+                >
+            <tag name="form.type_extension" alias="form" />
+        </service>
     </services>
 </container>

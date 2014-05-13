@@ -1,25 +1,24 @@
-Kata Data Transformers
+Kata Form Events
 ========================
 
-#### As a user, I need to link Tags to my Artcile.
+#### As a user, I need to link Tags to my Article.
 
 ```
 [x] Add a way to add Tags in the form Article.
 [x] Link a Tag to an Article if he already exists.
 [x] Tags are represented as text with space between other Tags.
-[x] Tests dataTransformer.
 ```
 
 ### Steps :
 
-1. Create another entity Tag with a title. Who have a ManyToMany relastionShip with entity Article.
-2. Create a dataTransformers class who implements `DataTransformerInterface`.
-3. Inject him ObjectManager.
-4. Implements `transform` and `reverseTransform` method for converting a text field into tags. Use `explode` function.
-5. In `reverseTransform` if a tag don't exist, persit a new one with ObjectManager. If not, link  to Article.
-6. Add tags field in form Article with the dataTransformers.
-7. Now create a custom field type for tags, create a class `TagType` who implements `AbstractType`.
-8. Set your dataTransfomer directly in your custom field in the `buildForm` method.
-9. Then register your custom filed as a service and tag it with `form.type` so that it's recognized as a custom field type.
-10. Now you replace your field `'tags'` and use your custom field in your ArticleType form, like
-`->add('tags', 'tags_selector')`
+1. Create another entity Tag with a title. Who have a ManyToMany relationShip with entity Article.
+2. Create a Subscriber class who implements `EventSubscriberInterface`.
+3. Inject entityManager with the constructor method.
+4. Define two events in getSubscribedEvents method `FormEvents::PRE_SET_DATA => 'preSetData'`
+and `FormEvents::POST_SUBMIT => 'postSubmit'`.
+5. In `preSetData` method get Article and add a text field tags with the titles of tags separate by space.
+Use `$event->getData()` for retrieving Article, and use `$event->getForm()` for retrieving the form.
+6. In `postSubmit` retrieve titles of Tags, test if they already exist in base, if not create them and set all tags to the current Article.
+Don't need to `flush()` just set the tags like `$article->setTags($tags);`.
+7. Now inject entityManager to the ArticleType in your service declaration. `<argument type="service" id="doctrine.orm.entity_manager"/>`.
+8. Then add your subscriber `->addEventSubscriber(new TagFieldSubscriber($this->em))` to your `ArticleType`, don't forget to inject em.

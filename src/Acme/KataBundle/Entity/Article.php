@@ -67,6 +67,7 @@ class Article
     function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -202,5 +203,12 @@ class Article
     public function getTags()
     {
         return $this->tags;
+    }
+
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+
+        return $this;
     }
 }

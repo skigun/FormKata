@@ -2,13 +2,26 @@
 
 namespace  Acme\KataBundle\Form\Type;
 
-use Acme\KataBundle\Form\DataTransformer\TagTransformer;
+use Acme\KataBundle\Form\EventListener\TagFieldSubscriber;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class ArticleType extends AbstractType
 {
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
+     * @param EntityManager $em
+     */
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
     /**
      * @param FormBuilderInterface $builder
      * @param array                $options
@@ -19,7 +32,7 @@ class ArticleType extends AbstractType
             ->add('title')
             ->add('content')
             ->add('author')
-            ->add('tags', 'tag_selector')
+            ->addEventSubscriber(new TagFieldSubscriber($this->em))
             ->add('submit', 'submit')
         ;
     }

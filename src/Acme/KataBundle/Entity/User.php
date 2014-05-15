@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Entity()
  */
-class Article
+class User
 {
     /**
      * @var integer
@@ -24,37 +24,16 @@ class Article
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=64)
-     *
-     * @Assert\NotBlank(message="Title should not be empty")
+     * @ORM\Column(name="username", type="string", length=64)
      */
-    private $title;
+    private $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="author", type="string", length=64)
-     *
-     * @Assert\NotBlank(message="Author should not be empty")
+     * @ORM\Column(name="mail", type="string", length=128)
      */
-    private $author;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="content", type="text")
-     *
-     * @Assert\NotBlank(message="Content should not be empty")
-     * @Assert\Length(min="20", minMessage="Article description must be longer")
-     */
-    private $content;
-
-    /**
-     * @var datetime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
+    private $mail;
 
     /**
      * @var string
@@ -84,11 +63,6 @@ class Article
      */
     private $country;
 
-    function __construct()
-    {
-        $this->createdAt = new \DateTime();
-    }
-
     /**
      * Get id
      *
@@ -100,102 +74,56 @@ class Article
     }
 
     /**
-     * Set title
+     * Set username
      *
-     * @param string $title
-     * @return Article
+     * @param string $username
+     * @return User
      */
-    public function setTitle($title)
+    public function setUsername($username)
     {
-        $this->title = $title;
+        $this->username = $username;
 
         return $this;
     }
 
     /**
-     * Get title
+     * Get username
      *
      * @return string 
      */
-    public function getTitle()
+    public function getUsername()
     {
-        return $this->title;
+        return $this->username;
     }
 
     /**
-     * Set author
+     * Set mail
      *
-     * @param string $author
-     * @return Article
+     * @param string $mail
+     * @return User
      */
-    public function setAuthor($author)
+    public function setMail($mail)
     {
-        $this->author = $author;
+        $this->mail = $mail;
 
         return $this;
     }
 
     /**
-     * Get author
+     * Get mail
      *
      * @return string 
      */
-    public function getAuthor()
+    public function getMail()
     {
-        return $this->author;
-    }
-
-    /**
-     * Set content
-     *
-     * @param string $content
-     * @return Article
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-
-        return $this;
-    }
-
-    /**
-     * Get content
-     *
-     * @return string 
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     * @return Article
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime 
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
+        return $this->mail;
     }
 
     /**
      * Set address
      *
      * @param string $address
-     * @return Article
+     * @return User
      */
     public function setAddress($address)
     {
@@ -218,7 +146,7 @@ class Article
      * Set zipcode
      *
      * @param string $zipcode
-     * @return Article
+     * @return User
      */
     public function setZipcode($zipcode)
     {
@@ -241,7 +169,7 @@ class Article
      * Set city
      *
      * @param string $city
-     * @return Article
+     * @return User
      */
     public function setCity($city)
     {
@@ -264,7 +192,7 @@ class Article
      * Set country
      *
      * @param string $country
-     * @return Article
+     * @return User
      */
     public function setCountry($country)
     {

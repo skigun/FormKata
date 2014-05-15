@@ -5,7 +5,7 @@ namespace  Acme\KataBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class ArticleType extends AbstractType
+class UserType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -14,10 +14,9 @@ class ArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
-            ->add('content')
-            ->add('author')
-            ->add('location', 'location', array('data_class' => 'Acme\KataBundle\Entity\Article'))
+            ->add('username')
+            ->add('mail')
+            ->add('location', 'location', array('data_class' => 'Acme\KataBundle\Entity\User'))
             ->add('submit', 'submit')
         ;
     }
@@ -27,6 +26,6 @@ class ArticleType extends AbstractType
      */
     public function getName()
     {
-        return 'article';
+        return 'user';
     }
 }

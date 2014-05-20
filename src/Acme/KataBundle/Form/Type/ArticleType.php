@@ -2,6 +2,7 @@
 
 namespace  Acme\KataBundle\Form\Type;
 
+use Acme\KataBundle\Form\Extension\DataMapper\XmlDocumentMapper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -19,6 +20,8 @@ class ArticleType extends AbstractType
             ->add('author')
             ->add('submit', 'submit')
         ;
+
+        $builder->setDataMapper(new XmlDocumentMapper());
     }
 
     /**

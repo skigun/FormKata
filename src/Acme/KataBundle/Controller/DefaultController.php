@@ -6,8 +6,10 @@ use Acme\KataBundle\Entity\Article;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Finder\Finder;
 
 class DefaultController extends Controller
 {
@@ -17,17 +19,22 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $article = new Article();
+        $path = __DIR__.'/../Entity/article.xml';
+
+        $article = simplexml_load_file($path);
 
         $form = $this->createForm('article', $article);
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($article);
-            $em->flush();
+            // we save the xml into the file
+            $article->saveXML($path);
 
-            return $this->redirect($this->generateUrl('success'));
+            $response = new Response($article->saveXML());
+
+            $response->headers->set('Content-type', 'text/xml');
+
+            return $response;
         }
 
         return array('form' => $form->createView());
